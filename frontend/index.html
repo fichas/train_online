@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Musubi LoRA 训练控制台</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Musubi LoRA 训练控制台</h1>
+      <p>通过图形界面快速配置数据集、训练参数与模型输出路径。</p>
+    </header>
+    <main>
+      <section class="panel" id="create-task">
+        <h2>创建训练任务</h2>
+        <form id="task-form">
+          <div class="field">
+            <label for="name">任务名称</label>
+            <input type="text" id="name" name="name" placeholder="如：中文对话 LoRA" required />
+          </div>
+          <div class="field">
+            <label for="dataset_path">数据集路径</label>
+            <input type="text" id="dataset_path" name="dataset_path" placeholder="/path/to/dataset" required />
+          </div>
+          <div class="field">
+            <label for="output_path">模型产物路径</label>
+            <input type="text" id="output_path" name="output_path" placeholder="/path/to/output" required />
+          </div>
+          <div class="grid">
+            <div class="field">
+              <label for="learning_rate">学习率</label>
+              <input type="number" step="0.00001" id="learning_rate" name="learning_rate" value="0.0001" />
+            </div>
+            <div class="field">
+              <label for="batch_size">批大小</label>
+              <input type="number" id="batch_size" name="batch_size" value="2" min="1" />
+            </div>
+            <div class="field">
+              <label for="epochs">训练轮数</label>
+              <input type="number" id="epochs" name="epochs" value="3" min="1" />
+            </div>
+            <div class="field">
+              <label for="warmup_steps">预热步数</label>
+              <input type="number" id="warmup_steps" name="warmup_steps" value="100" min="0" />
+            </div>
+            <div class="field">
+              <label for="gradient_accumulation">梯度累积</label>
+              <input type="number" id="gradient_accumulation" name="gradient_accumulation" value="1" min="1" />
+            </div>
+            <div class="field">
+              <label for="lora_rank">LoRA Rank</label>
+              <input type="number" id="lora_rank" name="lora_rank" value="16" min="1" />
+            </div>
+            <div class="field">
+              <label for="lora_alpha">LoRA Alpha</label>
+              <input type="number" id="lora_alpha" name="lora_alpha" value="32" min="1" />
+            </div>
+            <div class="field">
+              <label for="max_seq_length">最大序列长度</label>
+              <input type="number" id="max_seq_length" name="max_seq_length" value="1024" min="1" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="notes">备注</label>
+            <textarea id="notes" name="notes" rows="3" placeholder="描述数据集或训练目标"></textarea>
+          </div>
+          <label class="checkbox">
+            <input type="checkbox" id="simulate" name="simulate" />
+            使用模拟训练（用于体验界面，无需 musubi-tuner）
+          </label>
+          <button type="submit">创建任务</button>
+          <p class="hint">真实训练需先在服务器上安装并配置 musubi-tuner。</p>
+        </form>
+      </section>
+      <section class="panel" id="tasks-panel">
+        <h2>任务列表</h2>
+        <div id="tasks"></div>
+      </section>
+      <section class="panel" id="task-details" hidden>
+        <h2>任务详情</h2>
+        <div class="detail-grid">
+          <div><strong>任务名称：</strong><span id="detail-name"></span></div>
+          <div><strong>状态：</strong><span id="detail-status"></span></div>
+          <div><strong>进度：</strong><span id="detail-progress"></span></div>
+          <div><strong>数据集：</strong><span id="detail-dataset"></span></div>
+          <div><strong>输出目录：</strong><span id="detail-output"></span></div>
+          <div><strong>备注：</strong><span id="detail-notes"></span></div>
+        </div>
+        <h3>实时日志</h3>
+        <pre id="logs" class="logs"></pre>
+        <button id="cancel-button" type="button" class="danger">取消任务</button>
+      </section>
+    </main>
+    <footer>
+      <p>© 2024 Musubi LoRA 控制台 · 通过 API 与 musubi-tuner 集成</p>
+    </footer>
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
